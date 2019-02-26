@@ -1,0 +1,35 @@
+﻿@model VdarWeb.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="loginForm">
+    <h3>Вход на сайт</h3>
+    <form asp-antiforgery="true" asp-action="Login" asp-controller="Account">
+
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+
+        <div>
+            <label asp-for="Login">Логин:</label>
+            <input asp-for="Login" />
+            <span asp-validation-for="Login"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password">Пароль:</label>
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <div>
+            <input type="submit" value="Логин" />
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
