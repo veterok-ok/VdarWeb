@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using VdarWeb.Models;
 
 namespace VdarWeb
 {
@@ -30,10 +32,10 @@ namespace VdarWeb
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
-                    {
-                        options.RequireHttpsMetadata = false;
+                    { 
+                        //options.RequireHttpsMetadata = false;
                         options.TokenValidationParameters = new TokenValidationParameters
-                        {
+                        {                            
                             // указывает, будет ли валидироваться издатель при валидации токена
                             ValidateIssuer = true,
                             // строка, представляющая издателя
@@ -45,12 +47,50 @@ namespace VdarWeb
                             // будет ли валидироваться время существования
                             RequireExpirationTime = true,
                             ValidateLifetime = true,
-                            ClockSkew = TimeSpan.FromSeconds(0),
+                            ClockSkew = TimeSpan.Zero,
                             //ClockSkew = TimeSpan.FromSeconds(AuthOptions.LIFETIME),
                             // установка ключа безопасности
                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                             // валидация ключа безопасности
                             ValidateIssuerSigningKey = true
+                        };
+                        options.Events = new JwtBearerEvents()
+                        {
+                            OnMessageReceived = context =>
+                            {
+                                if (!String.IsNullOrEmpty(context.Request.Cookies["AT"]) && !String.IsNullOrEmpty(context.Request.Cookies["RT"]))
+                                {
+                                    string accessToken = context.Request.Cookies["AT"];
+                                    string refreshToken = context.Request.Cookies["RT"];
+
+                                    using (WebClient wc = new WebClient())
+                                    {
+                                        wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                                        wc.QueryString.Add("grant_type", "refresh_token");
+                                        wc.QueryString.Add("refresh_token", refreshToken);
+                                        wc.Headers["Authorization"] = "Bearer " + accessToken;
+                                        var HtmlResult = wc.UploadString(AuthOptions.AUTHORITY, "POST", wc.QueryString.ToString());
+
+                                        SerializedModelAuth info = JsonConvert.DeserializeObject<SerializedModelAuth>(HtmlResult);
+
+                                        CookieOptions JWT = new CookieOptions();
+                                        JWT.HttpOnly = true;
+                                        JWT.Expires = DateTime.Now.AddDays(2);
+                                        context.Response.Cookies.Append("AT", info.Data.access_token, JWT);
+                                        accessToken = info.Data.access_token;
+
+                                        CookieOptions RT = new CookieOptions();
+                                        RT.HttpOnly = true;
+                                        RT.Expires = DateTime.Now.AddDays(2);
+                                        context.Response.Cookies.Append("RT", info.Data.refresh_token, RT);
+
+                                    }
+
+                                    context.HttpContext.Request.Headers.Add("Authorization", "Bearer " + accessToken);
+
+                                }
+                                return Task.CompletedTask;
+                            }
                         };
                     });
 
@@ -84,13 +124,6 @@ namespace VdarWeb
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.Use(async (context, next) =>
-            {
-                if (!String.IsNullOrEmpty(context.Request.Cookies["AT"]))
-                    context.Request.Headers.Add("Authorization", "Bearer " + context.Request.Cookies["AT"]);
-                await next.Invoke();
-            });
 
            app.UseAuthentication();
 

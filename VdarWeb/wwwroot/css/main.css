@@ -1,0 +1,65 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15.01.2019, 13:27:03
+    Author     : DEVEL
+*/
+
+#logo{
+    height: 40px;
+    width: 70px;
+    background-image: url(../img/logo6.png);
+    background-position: center;
+    background-size: 108%;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+}
+#slogan-block{
+    background-color: white;
+    -webkit-box-shadow: 0px 9px 15px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 9px 15px -6px rgba(0,0,0,0.75);
+    box-shadow: 0px 6px 8px -6px rgba(0,0,0,0.75);
+    margin-top: auto;
+}
+.without_border_radius{
+    border-radius: 0!important;
+}
+.label_extension_1{
+    font-family: cursive;
+    font-size: 1.1em!important
+}
+
+#content {
+		min-height: 100px;
+		}
+.ui.grid{
+		padding: 0 !important;
+		}
+.pushable.segment{
+    margin: 0 !important;
+    border-radius: 0!important;
+    border: none!important;
+    top: 28px;
+}
+.seg_without_heigh{
+    height:auto;
+}
+.card_ext{
+            max-width: 15%!important;
+    }
+ @media only screen and (max-width: 1255px){
+    .card_ext{
+            max-width: 20%!important;
+    }
+}   
+@media only screen and (max-width: 768px){
+    .card_ext{
+            max-width: 50%!important;
+            margin-left: 25%!important;
+    }
+}
+
+

@@ -2,39 +2,57 @@
 @{
     ViewData["Title"] = "Login";
 }
-
-<div class="loginForm">
-    <h3>Вход на сайт</h3>
-    <form asp-antiforgery="true" asp-action="Login" asp-controller="Account">
-
-        <div class="validation" asp-validation-summary="ModelOnly"></div>
-
-        <div>
-            <label asp-for="Login">Логин:</label>
-            <input asp-for="Login" />
-            <span asp-validation-for="Login"></span>
+<div class="ui centered grid container" style="background-color: 1#343637;">
+    <div class="row">
+        <div class="column">
+            <div class="ui large breadcrumb">
+                <a asp-controller="Home" asp-action="Index" class="section"><i class="home icon"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Главная</font></font></a>
+                <i class="inverted right chevron icon"></i>
+                <a class="section active_section"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Авторизация</font></font></a>
+            </div>
         </div>
-
-        <div>
-            <label asp-for="Password">Пароль:</label>
-            <input asp-for="Password" />
-            <span asp-validation-for="Password"></span>
+    </div>
+    <div class="row">
+        <div class="sixteen wide center aligned column ">
+            <h4 class="h4-title">Здорово, что ты вернулся!</h4>
+            <div class="line-with-red-center"></div>
         </div>
+    </div>
+    <div class="row">
+        <div class="fourteen wide mobile eight wide tablet eight wide computer center aligned column">
+            <form asp-antiforgery="true" asp-action="Login" asp-controller="Account">
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
 
-        <div>
-            <input type="submit" value="Логин" />
+                <div class="form-group">
+                    <!--<input type="email"  id="exampleInputEmail1" >-->
+                    <input asp-for="Login" class="form-control" placeholder="Email or User Name" />
+                    <span asp-validation-for="Login"></span>
+                </div>
+                <div class="form-group">
+                    <input asp-for="Password" class="form-control" placeholder="Password" />
+                    <span asp-validation-for="Password"></span>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox mr-sm-2">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="rememberme" id="customControlAutosizing">
+                            <label class="custom-control-label" for="customControlAutosizing">Remember me</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn vizew-btn w-100 mt-30">Login</button>
+            </form>
         </div>
-
-    </form>
-    <form asp-antiforgery="true" asp-action="Refresh" asp-controller="Account">
-        <div>
-            <input type="submit" value="Refresh" />
-        </div>
-    </form>
+    </div>
 </div>
 
+
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
+
+
+@section Styles {
+    <link href="~/css/login.css" rel="stylesheet" type="text/css" />
 }
