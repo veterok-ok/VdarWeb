@@ -26,6 +26,11 @@
         </div>
 
     </form>
+    <form asp-antiforgery="true" asp-action="Refresh" asp-controller="Account">
+        <div>
+            <input type="submit" value="Refresh" />
+        </div>
+    </form>
 </div>
 
 @section Scripts {

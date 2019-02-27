@@ -43,7 +43,10 @@ namespace VdarWeb
                             // установка потребителя токена
                             ValidAudience = AuthOptions.AUDIENCE,
                             // будет ли валидироваться время существования
+                            RequireExpirationTime = true,
                             ValidateLifetime = true,
+                            ClockSkew = TimeSpan.FromSeconds(0),
+                            //ClockSkew = TimeSpan.FromSeconds(AuthOptions.LIFETIME),
                             // установка ключа безопасности
                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                             // валидация ключа безопасности

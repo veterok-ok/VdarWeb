@@ -19,6 +19,7 @@ namespace VdarWeb.Controllers
 {
     public class AccountController : Controller
     {
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -39,6 +40,7 @@ namespace VdarWeb.Controllers
                     wc.QueryString.Add("username", model.Login);
                     wc.QueryString.Add("password", model.Password);
                     wc.QueryString.Add("grant_type", "password");
+                    wc.Headers["Authorization"] = "Bearer " + ControllerContext.HttpContext.Request.Cookies["AT"];
                     var HtmlResult = wc.UploadString(AuthOptions.AUTHORITY, "POST", wc.QueryString.ToString());
 
                     SerializedModelAuth info = JsonConvert.DeserializeObject<SerializedModelAuth>(HtmlResult);
@@ -51,7 +53,7 @@ namespace VdarWeb.Controllers
                     CookieOptions RT = new CookieOptions();
                     RT.HttpOnly = true;
                     RT.Expires = DateTime.Now.AddDays(2);
-                    Response.Cookies.Append("RT", info.Data.refresh_token, JWT);
+                    Response.Cookies.Append("RT", info.Data.refresh_token, RT);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -66,6 +68,41 @@ namespace VdarWeb.Controllers
                 return View(model);
             }
 
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult Refresh()
+        {
+            try
+            {
+                using (WebClient wc = new WebClient())
+                {
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    wc.QueryString.Add("grant_type", "refresh_token");
+                    wc.QueryString.Add("refresh_token", ControllerContext.HttpContext.Request.Cookies["RT"]);
+                    wc.Headers["Authorization"] = "Bearer " + ControllerContext.HttpContext.Request.Cookies["AT"];
+                    var HtmlResult = wc.UploadString(AuthOptions.AUTHORITY, "POST", wc.QueryString.ToString());
+
+                    SerializedModelAuth info = JsonConvert.DeserializeObject<SerializedModelAuth>(HtmlResult);
+
+                    CookieOptions JWT = new CookieOptions();
+                    JWT.HttpOnly = true;
+                    JWT.Expires = DateTime.Now.AddDays(2);
+                    Response.Cookies.Append("AT", info.Data.access_token, JWT);
+
+                    CookieOptions RT = new CookieOptions();
+                    RT.HttpOnly = true;
+                    RT.Expires = DateTime.Now.AddDays(2);
+                    Response.Cookies.Append("RT", info.Data.refresh_token, RT);
+
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
         }
     }
 
