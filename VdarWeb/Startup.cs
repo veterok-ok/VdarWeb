@@ -57,6 +57,10 @@ namespace VdarWeb
                             // валидация ключа безопасности
                             ValidateIssuerSigningKey = true
                         };
+
+                        options.SecurityTokenValidators.Clear();
+                        options.SecurityTokenValidators.Add(new MySecurityTokenValidator());
+
                         options.Events = new JwtBearerEvents()
                         {
                             OnMessageReceived = context =>
