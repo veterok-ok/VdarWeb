@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using VdarWeb.Models;
+using Wangkanai.Detection;
 
 namespace VdarWeb
 {
@@ -31,6 +32,7 @@ namespace VdarWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDetection();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     { 
@@ -70,10 +72,16 @@ namespace VdarWeb
                                     if( DateTime.UtcNow > parsedJwt.Payload.ValidTo.AddSeconds(-5)) { 
                                         using (WebClient wc = new WebClient())
                                         {
+                                            var detection = services.BuildServiceProvider().GetRequiredService<IDetection>();
+
                                             wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
                                             wc.QueryString.Add("grant_type", "refresh_token");
                                             wc.QueryString.Add("refresh_token", refreshToken);
+                                            wc.QueryString.Add("finger_print",detection.Browser.Name + " " + detection.Device.Type);
                                             wc.Headers["Authorization"] = "Bearer " + accessToken;
+
+                                            
+                                            
                                             var HtmlResult = wc.UploadString(AuthOptions.AUTHORITY, "POST", wc.QueryString.ToString());
 
                                             SerializedModelAuth info = JsonConvert.DeserializeObject<SerializedModelAuth>(HtmlResult);
