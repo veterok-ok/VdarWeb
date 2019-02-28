@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -57,35 +58,38 @@ namespace VdarWeb
                         options.Events = new JwtBearerEvents()
                         {
                             OnMessageReceived = context =>
-                            {
+                            {                                
                                 if (!String.IsNullOrEmpty(context.Request.Cookies["AT"]) && !String.IsNullOrEmpty(context.Request.Cookies["RT"]))
                                 {
                                     string accessToken = context.Request.Cookies["AT"];
                                     string refreshToken = context.Request.Cookies["RT"];
 
-                                    using (WebClient wc = new WebClient())
-                                    {
-                                        wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                                        wc.QueryString.Add("grant_type", "refresh_token");
-                                        wc.QueryString.Add("refresh_token", refreshToken);
-                                        wc.Headers["Authorization"] = "Bearer " + accessToken;
-                                        var HtmlResult = wc.UploadString(AuthOptions.AUTHORITY, "POST", wc.QueryString.ToString());
+                                    var tokenHandler = new JwtSecurityTokenHandler();
+                                    JwtSecurityToken parsedJwt = tokenHandler.ReadToken(accessToken) as JwtSecurityToken;
+                                    if( DateTime.UtcNow > parsedJwt.Payload.ValidTo.AddSeconds(-5)) { 
+                                        using (WebClient wc = new WebClient())
+                                        {
+                                            wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                                            wc.QueryString.Add("grant_type", "refresh_token");
+                                            wc.QueryString.Add("refresh_token", refreshToken);
+                                            wc.Headers["Authorization"] = "Bearer " + accessToken;
+                                            var HtmlResult = wc.UploadString(AuthOptions.AUTHORITY, "POST", wc.QueryString.ToString());
 
-                                        SerializedModelAuth info = JsonConvert.DeserializeObject<SerializedModelAuth>(HtmlResult);
+                                            SerializedModelAuth info = JsonConvert.DeserializeObject<SerializedModelAuth>(HtmlResult);
 
-                                        CookieOptions JWT = new CookieOptions();
-                                        JWT.HttpOnly = true;
-                                        JWT.Expires = DateTime.Now.AddDays(2);
-                                        context.Response.Cookies.Append("AT", info.Data.access_token, JWT);
-                                        accessToken = info.Data.access_token;
+                                            CookieOptions JWT = new CookieOptions();
+                                            JWT.HttpOnly = true;
+                                            JWT.Expires = DateTime.Now.AddDays(2);
+                                            context.Response.Cookies.Append("AT", info.Data.access_token, JWT);
+                                            accessToken = info.Data.access_token;
 
-                                        CookieOptions RT = new CookieOptions();
-                                        RT.HttpOnly = true;
-                                        RT.Expires = DateTime.Now.AddDays(2);
-                                        context.Response.Cookies.Append("RT", info.Data.refresh_token, RT);
+                                            CookieOptions RT = new CookieOptions();
+                                            RT.HttpOnly = true;
+                                            RT.Expires = DateTime.Now.AddDays(2);
+                                            context.Response.Cookies.Append("RT", info.Data.refresh_token, RT);
 
+                                        }
                                     }
-
                                     context.HttpContext.Request.Headers.Add("Authorization", "Bearer " + accessToken);
 
                                 }
