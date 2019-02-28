@@ -2,3 +2,35 @@
     ViewData["Title"] = "Home Page";
 }
 <h1>main</h1>
+<input type="submit" id="btn" value="check" />
+@section Scripts{
+
+    <script>
+        $('#btn').click(function (e) {
+            $.ajax({
+
+                type: 'GET',
+                url: '/Home/check',
+                /* beforeSend: function (xhr) {
+                     var token = sessionStorage.getItem(tokenKey);
+                     xhr.setRequestHeader("Authorization", "Bearer " + token);
+                 },*/
+                success: function (data) {
+                    //alert(data);
+                    console.log('succesful');
+                },
+                fail: function (data) {
+                    console.log('fail');
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.href = data.responseText;
+                    }
+                    else {
+                        console.log("error");
+                    }
+                }
+            });
+        });
+    </script>
+}

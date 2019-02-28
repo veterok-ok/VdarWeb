@@ -10,13 +10,13 @@ namespace VdarWeb.Models
     {
         public SerializedModelAuth()
         {
-            Code = String.Empty;
+            Code = 0;
             Message = String.Empty;
             Data = null;
         }
 
         [JsonProperty("Code")]
-        public string Code { get; set; }
+        public int Code { get; set; }
         [JsonProperty("Message")]
         public string Message { get; set; }
         [JsonProperty("Data")]

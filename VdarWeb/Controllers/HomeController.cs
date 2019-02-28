@@ -16,7 +16,11 @@ namespace VdarWeb.Controllers
         {
             return View();
         }
-
+        [Authorize]
+        public IActionResult check()
+        {
+            return Ok($"Ваш логин: {User.Identity.Name}");
+        }
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

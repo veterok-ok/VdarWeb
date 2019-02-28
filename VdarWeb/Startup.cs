@@ -59,7 +59,8 @@ namespace VdarWeb
                         {
                             OnMessageReceived = context =>
                             {                                
-                                if (!String.IsNullOrEmpty(context.Request.Cookies["AT"]) && !String.IsNullOrEmpty(context.Request.Cookies["RT"]))
+                                if (!String.IsNullOrEmpty(context.Request.Cookies["AT"]) && 
+                                    !String.IsNullOrEmpty(context.Request.Cookies["RT"]))
                                 {
                                     string accessToken = context.Request.Cookies["AT"];
                                     string refreshToken = context.Request.Cookies["RT"];
@@ -77,20 +78,30 @@ namespace VdarWeb
 
                                             SerializedModelAuth info = JsonConvert.DeserializeObject<SerializedModelAuth>(HtmlResult);
 
-                                            CookieOptions JWT = new CookieOptions();
-                                            JWT.HttpOnly = true;
-                                            JWT.Expires = DateTime.Now.AddDays(2);
-                                            context.Response.Cookies.Append("AT", info.Data.access_token, JWT);
-                                            accessToken = info.Data.access_token;
+                                            if (info.Code.Equals(999)) { 
+                                                CookieOptions JWT = new CookieOptions();
+                                                JWT.HttpOnly = true;
+                                                JWT.Expires = DateTime.Now.AddDays(2);
+                                                context.Response.Cookies.Append("AT", info.Data.access_token, JWT);
+                                                accessToken = info.Data.access_token;
 
-                                            CookieOptions RT = new CookieOptions();
-                                            RT.HttpOnly = true;
-                                            RT.Expires = DateTime.Now.AddDays(2);
-                                            context.Response.Cookies.Append("RT", info.Data.refresh_token, RT);
-
+                                                CookieOptions RT = new CookieOptions();
+                                                RT.HttpOnly = true;
+                                                RT.Expires = DateTime.Now.AddDays(2);
+                                                context.Response.Cookies.Append("RT", info.Data.refresh_token, RT);
+                                                
+                                                context.HttpContext.Request.Headers.Add("Authorization", "Bearer " + accessToken);
+                                            }
+                                            else
+                                            {
+                                                context.Response.Cookies.Delete("AT");
+                                                context.Response.Cookies.Delete("RT");
+                                            }
                                         }
                                     }
-                                    context.HttpContext.Request.Headers.Add("Authorization", "Bearer " + accessToken);
+                                    else
+                                        context.HttpContext.Request.Headers.Add("Authorization", "Bearer " + accessToken);
+
 
                                 }
                                 return Task.CompletedTask;
@@ -106,12 +117,21 @@ namespace VdarWeb
         {
             app.UseStatusCodePages(context =>
             {
+                var isAjax = context.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
                 if (context.HttpContext.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
-                    context.HttpContext.Response.Redirect("/Account/Login");
+                {
+                    if (isAjax)
+                        context.HttpContext.Response.WriteAsync("/Account/Login");
+                    else
+                        context.HttpContext.Response.Redirect("/Account/Login");
+                }
                 else
                 {
                     var location = string.Format(CultureInfo.InvariantCulture, "/Error/Index?errorCode={0}", context.HttpContext.Response.StatusCode);
-                    context.HttpContext.Response.Redirect(location);
+                    if (isAjax)
+                        context.HttpContext.Response.WriteAsync(location);
+                    else
+                        context.HttpContext.Response.Redirect(location);
                 }
                 return Task.CompletedTask;
             });
