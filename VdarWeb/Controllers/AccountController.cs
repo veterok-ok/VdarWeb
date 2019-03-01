@@ -14,11 +14,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using VdarWeb.Models;
+using Wangkanai.Detection;
 
 namespace VdarWeb.Controllers
 {
     public class AccountController : Controller
     {
+        IDetection _detection;
+        public AccountController(IDetection detection)
+        {
+            _detection = detection;
+        }
 
         [HttpGet]
         public IActionResult Login()
@@ -39,6 +45,7 @@ namespace VdarWeb.Controllers
                     wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
                     wc.QueryString.Add("username", model.Login);
                     wc.QueryString.Add("password", model.Password);
+                    wc.QueryString.Add("finger_print", _detection.Browser.Type + " " + _detection.Device.Type);
                     wc.QueryString.Add("grant_type", "password");
                     wc.Headers["Authorization"] = "Bearer " + ControllerContext.HttpContext.Request.Cookies["AT"];
                     var HtmlResult = wc.UploadString(AuthOptions.AUTHORITY, "POST", wc.QueryString.ToString());

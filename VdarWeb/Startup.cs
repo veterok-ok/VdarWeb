@@ -58,8 +58,8 @@ namespace VdarWeb
                             ValidateIssuerSigningKey = true
                         };
 
-                        options.SecurityTokenValidators.Clear();
-                        options.SecurityTokenValidators.Add(new MySecurityTokenValidator());
+                        /*options.SecurityTokenValidators.Clear();
+                        options.SecurityTokenValidators.Add(new MySecurityTokenValidator());*/
 
                         options.Events = new JwtBearerEvents()
                         {
@@ -81,7 +81,7 @@ namespace VdarWeb
                                             wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
                                             wc.QueryString.Add("grant_type", "refresh_token");
                                             wc.QueryString.Add("refresh_token", refreshToken);
-                                            wc.QueryString.Add("finger_print",detection.Browser.Name + " " + detection.Device.Type);
+                                            wc.QueryString.Add("finger_print",detection.Browser.Type + " " + detection.Device.Type);
                                             wc.Headers["Authorization"] = "Bearer " + accessToken;
 
                                             
