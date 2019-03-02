@@ -51,18 +51,25 @@ namespace VdarWeb.Controllers
                     var HtmlResult = wc.UploadString(AuthOptions.AUTHORITY, "POST", wc.QueryString.ToString());
 
                     SerializedModelAuth info = JsonConvert.DeserializeObject<SerializedModelAuth>(HtmlResult);
+                    if (info.Code.Equals(999))
+                    {
+                        CookieOptions JWT = new CookieOptions();
+                        JWT.HttpOnly = true;
+                        JWT.Expires = DateTime.Now.AddDays(2);
+                        Response.Cookies.Append("AT", info.Data.access_token, JWT);
 
-                    CookieOptions JWT = new CookieOptions();
-                    JWT.HttpOnly = true;
-                    JWT.Expires = DateTime.Now.AddDays(2);
-                    Response.Cookies.Append("AT", info.Data.access_token, JWT);
+                        CookieOptions RT = new CookieOptions();
+                        RT.HttpOnly = true;
+                        RT.Expires = DateTime.Now.AddDays(2);
+                        Response.Cookies.Append("RT", info.Data.refresh_token, RT);
 
-                    CookieOptions RT = new CookieOptions();
-                    RT.HttpOnly = true;
-                    RT.Expires = DateTime.Now.AddDays(2);
-                    Response.Cookies.Append("RT", info.Data.refresh_token, RT);
-
-                    return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(String.Empty, info.Message);
+                        return View(model);
+                    }
                 }
             }
             catch (WebException wex)
