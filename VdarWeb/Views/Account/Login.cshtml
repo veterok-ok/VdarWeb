@@ -2,46 +2,67 @@
 @{
     ViewData["Title"] = "Login";
 }
-<div class="ui centered grid container" style="background-color: 1#343637;">
+<div class="ui centered grid container">
     <div class="row">
-        <div class="column">
-            <div class="ui large breadcrumb">
-                <a asp-controller="Home" asp-action="Index" class="section"><i class="home icon"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Главная</font></font></a>
-                <i class="inverted right chevron icon"></i>
-                <a class="section active_section"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Авторизация</font></font></a>
+        <div class="fourteen wide mobile eight wide tablet eight wide computer center aligned column">
+            <div class="formselector">
+                <div class="reg formselectoritem activeformselector ShowFromLeft" way-attr="1" for-form="reg-form "><span>Регистрация</span></div>
+                <div class="vdar-divider"></div>
+                <div class="auth formselectoritem  " way-attr="2" for-form="login-form"><span>Авторизация</span></div>
+                <div class="vdar-divider"></div>
+                <div class="recovery formselectoritem" way-attr="3" for-form="recovery-form"><span>Восстановить</span></div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="sixteen wide center aligned column ">
-            <h4 class="h4-title">Здорово, что ты вернулся!</h4>
-            <div class="line-with-red-center"></div>
-        </div>
-    </div>
-    <div class="row">
         <div class="fourteen wide mobile eight wide tablet eight wide computer center aligned column">
-            <form asp-antiforgery="true" asp-action="Login" asp-controller="Account">
-                <div class="validation" asp-validation-summary="ModelOnly"></div>
-
-                <div class="form-group">
-                    <!--<input type="email"  id="exampleInputEmail1" >-->
-                    <input asp-for="Login" class="form-control" placeholder="Email or User Name" />
-                    <span asp-validation-for="Login"></span>
-                </div>
-                <div class="form-group">
-                    <input asp-for="Password" class="form-control" placeholder="Password" />
-                    <span asp-validation-for="Password"></span>
-                </div>
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox mr-sm-2">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="rememberme" id="customControlAutosizing">
-                            <label class="custom-control-label" for="customControlAutosizing">Remember me</label>
-                        </div>
+            <div class="formlist">
+                <form action="index.html" method="post" class="vdar-form recovery-form" sln="0">
+                    <div class="form-group">
+                        <input type="tel" class="form-control" id="exampleInputEmail1-rec" placeholder="Телефон">
                     </div>
-                </div>
-                <button type="submit" class="btn vizew-btn w-100 mt-30">Login</button>
-            </form>
+                    <button type="submit" class="btn vdar-btn w-100 ">Продолжить</button>
+                </form>
+                <form asp-antiforgery="true" asp-action="Login" asp-controller="Account" method="post" class="vdar-form login-form activeform" sln="100">
+                        <div class="validation" asp-validation-summary="ModelOnly">
+                            <div class="validation-summary-errors-title">
+                                <i class="exclamation small circle icon"></i>
+                                <span>К сожалению, при попытке входа возникли ошибки</span>
+                            </div>
+
+                        </div>
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="EnterLogin" asp-for="Login" placeholder="Логин / Email / телефон">
+                        <span asp-validation-for="Login"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" asp-for="Password" required class="form-control" id="exampleInputPassword1" placeholder="Пароль">
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                    <button type="submit" class="btn vdar-btn w-100">Войти</button>
+                </form>
+                <form asp-antiforgery="true" asp-action="Login" asp-controller="Account" method="post" class="vdar-form reg-form" sln="200">
+                        <div class="validation" asp-validation-summary="ModelOnly">
+                            <div class="validation-summary-errors-title">
+                                <i class="exclamation small circle icon"></i>
+                                <span>К сожалению, при попытке входа возникли ошибки</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" asp-for="Login" class="form-control" placeholder="Телефон">
+                            <span asp-validation-for="Login"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" asp-for="Password" class="form-control" placeholder="Пароль">
+                            <span asp-validation-for="Password"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Пароль ещё раз">
+                        </div>
+                        <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lf53JQUAAAAAOTSqt0fJHZDQyMix23VWvK6gpu1"></div>
+                        <button type="submit" class="btn vdar-btn w-100">Регистрация</button>
+                    </form>
+</div>
         </div>
     </div>
 </div>
@@ -50,6 +71,7 @@
 @section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/login_page.js"></script>
 }
 
 

@@ -5,7 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#222627" />
     <title>@ViewData["Title"] - VdarWeb</title>
-    <environment include="Development">
+    <link href="~/css/semantic.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=100,400,500,600,700" rel="stylesheet">
+    <script src="~/js/jquery-3.3.1.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js" integrity="sha256-0YPKAwZP7Mp3ALMRVB2i8GXeEndvCq3eSl/WsAl1Ryk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.5/waypoints.min.js" type="text/javascript"></script>
+    <script src="~/js/jquery.counterup.min.js" type="text/javascript"></script>
+    <script src="~/js/semantic.js" type="text/javascript"></script>
+    <link href="~/css/vdar.css?v=0.58" rel="stylesheet" type="text/css" />
+    @*<environment include="Development">
         <link href="~/css/semantic.css" rel="stylesheet" type="text/css" />
         <link href="~/css/vdar.css?v=0.19" rel="stylesheet" type="text/css" />
     </environment>
@@ -14,7 +23,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    </environment>*@
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -22,147 +31,131 @@
         <div class="classycloseIcon">
             <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
         </div>
-        <a asp-controller="Home" asp-action="Index" class="_sb__menu_item ">
+        <a href="index.html" class="_sb__menu_item ">
             Главная
         </a>
-        <a class="_sb__menu_item">
+        <a href="actions.html" class="_sb__menu_item">
             Акции
         </a>
-        <a class=" _sb__menu_item">
+        <a href="archive.html" class=" _sb__menu_item">
             Архив
         </a>
-        <a class=" _sb__menu_item ">
+        <a href="contacts.html" class=" _sb__menu_item ">
             Контакты
         </a>
         <a class=" _sb__menu_item">
             О нас
         </a>
     </div>
-
-
-    <div class="ui pushable inverted vertical menu sidebar _sidebar">
-        <div class="classycloseIcon">
-            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
-        </div>
-        <a asp-controller="Home" asp-action="Index" class="_sb__menu_item ">
-            Главная
-        </a>
-        <a class="_sb__menu_item">
-            Акции
-        </a>
-        <a class=" _sb__menu_item">
-            Архив
-        </a>
-        <a class=" _sb__menu_item ">
-            Контакты
-        </a>
-        <a class=" _sb__menu_item">
-            О нас
-        </a>
-    </div>
-    <!--    <div class="ui top fixed menu">
-        123
-      </div>-->
     <div class="pusher" style="color:white;">
-        <div class="ui center aligned container">
-            <div class="ui two column stackable grid ">
-                <div class="row _top_row">
-                    <div class="right aligned column _no_bot_pad" style="background-color: 1#2bbbff; padding-bottom: 0!important;">
-                        <div class="ui horizontal  segments _no_border _no_margin">
-                            <div class="ui right aligned segment _black_bg _news_title_seg " style="background-color: 1lightcyan!important;">
-                                <p class="_news"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Последние новости:</font></font></p>
+        <div class="_ui_sticky">
+            <div class="ui center aligned container _top_content">
+                <div class="ui stackable grid " style="margin-bottom: 0!important;margin-top: 0!important;">
+                    <div class="eight wide column pd-30">
+                        <div class="ui grid">
+                            <div class="six wide right aligned column _no_pad">
+                                <div>
+                                    <p class="_news"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Последние новости:</font></font></p>
+                                </div>
                             </div>
-                            <div class="ui left aligned segment _black_bg">
-                                <p class="_news_content"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Запускаем в работу.Всё будет збс! Проект выстрелит </font></font></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="left aligned column _no_bot_pad" style="background-color: 1#00B5AD; padding-top: 0!important;">
-                        <div class="ui horizontal  segments _no_border _no_margin">
-                            <div class="ui cenered aligned segment _black_bg _soc_block" style="background-color: 1lightcyan!important;">
-                                <a class="">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">
-                                            <i class="facebook f icon"></i>
-                                        </font>
-                                    </font>
-                                </a>
-                                <a class="header">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">
-                                            <i class="twitter icon"></i>
-                                        </font>
-                                    </font>
-                                </a>
-                                <a class="header">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">
-                                            <i class="youtube icon"></i>
-                                        </font>
-                                    </font>
-                                </a>
-                                <a class="header">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">
-                                            <i class="instagram icon"></i>
-                                        </font>
-                                    </font>
-                                </a>
-                            </div>
-                            <div class="ui right aligned segment _black_bg _enter_block">
-                                <a asp-controller="Account" asp-action="Login" class="">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">
-                                            <i class="large user icon"></i>
-                                        </font>
-                                    </font>
-                                </a>
+                            <div class="ten wide left aligned column _no_pad">
+                                <div class="_news_block">
+                                    <p class="_news_content"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">VDAR рвёт топы VDAR рвёт топы VDAR рвёт топы</font></font></p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui sticky _ui_sticky">
-            <div class="ui grid _grid">
-                <div class="computer only row">
-                    <div class="column">
-                        <div class="ui inverted secondary red attached stackable menu _menu_container ">
-                            <div class="ui container">
-                                <a class="item">
-                                    <div id="logo"></div>
-                                </a>
-                                <div class="right item _right_menu">
-                                    <a asp-action="Index" asp-controller="Home" class="_menu_item _active ">
-                                        Главная
+
+                    <div class="eight wide column pd-30">
+                        <div class="ui grid">
+                            <div class="ten wide centered aligned column _no_pad">
+                                <div class="ui _black_bg _soc_block" style="background-color: 1lightcyan!important;">
+                                    <a class="">
+                                        <font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">
+                                                <i class="vk icon"></i>
+                                            </font>
+                                        </font>
                                     </a>
-                                    <a class="_menu_item">
-                                        Акции
+                                    <a class="header">
+                                        <font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">
+                                                <i class="instagram icon"></i>
+                                            </font>
+                                        </font>
                                     </a>
-                                    <a class=" _menu_item">
-                                        Архив
+                                    <a class="header">
+                                        <font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">
+                                                <i class="youtube icon"></i>
+                                            </font>
+                                        </font>
                                     </a>
-                                    <a class=" _menu_item ">
-                                        Контакты
+                                    <a class="header" href="single-action.html">
+                                        <font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">
+                                                <i class="google icon"></i>
+                                            </font>
+                                        </font>
                                     </a>
-                                    <a class=" _menu_item">
-                                        О нас
+                                </div>
+                            </div>
+                            <div class="six wide right aligned column _no_pad">
+                                <div class="ui _black_bg _enter_block">
+                                    <a href="login.html" class="">
+                                        <font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">
+                                                <i class="large user icon"></i>
+                                            </font>
+                                        </font>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="ui  tablet mobile only  row">
-                    <div class="column">
-                        <div class="ui inverted secondary red attached menu _menu_container ">
-                            <div class="ui container">
-                                <a class="item">
-                                    <div id="logo"></div>
-                                </a>
-                                <div class="right item _right_menu">
-                                    <div id="mobile_item" class="classy-navbar-toggler">
-                                        <span class="navbarToggler"><span></span><span></span><span></span></span>
+            </div>
+            <div>
+                <div class="ui grid _grid">
+                    <div class="computer only row">
+                        <div class="column">
+                            <div class="ui secondary attached stackable menu _menu_container ">
+                                <div class="ui container">
+                                    <a class="item">
+                                        <div id="logo"></div>
+                                    </a>
+                                    <div class="right item _right_menu">
+                                        <a href="index.html" class="_menu_item _active ">
+                                            Главная
+                                        </a>
+                                        <a href="actions.html" class="_menu_item">
+                                            Акции
+                                        </a>
+                                        <a href="archive.html" class=" _menu_item">
+                                            Архив
+                                        </a>
+                                        <a href="contacts.html" class=" _menu_item ">
+                                            Контакты
+                                        </a>
+                                        <a class=" _menu_item">
+                                            О нас
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui  tablet mobile only  row">
+                        <div class="column sticky_column">
+                            <div class="ui  secondary attached menu _menu_container ">
+                                <div class="ui container">
+                                    <a class="item">
+                                        <div id="logo"></div>
+                                    </a>
+                                    <div class="right item _right_menu">
+                                        <div id="mobile_item" class="classy-navbar-toggler">
+                                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -171,13 +164,62 @@
                 </div>
             </div>
         </div>
-        <div id="newbody" class="ui container" style="padding-top: 80px;">
+        <div id="content" class="ui container">
             @RenderBody()
         </div>
+        <footer>
+            <div class="ui container footer-container">
+                <div class="footer">
+                    <div class="footer-item">
+                        <div class="footer-logo"></div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna</p>
+                        <form action="#" method="post">
+                            <input type="email" name="nl-email" class="form-control" id="nlEmail" placeholder="Your email">
+                            <button type="submit" class="vdar-btn"><i class="paper plane outline icon"></i></button>
+                        </form>
+                    </div>
+                    <div class="footer-item pdtops">
+                        <h3>Последние записи</h3>
+                        <p><i class="vk red icon"></i> <span>@@VDAR.KZ</span> I am so happy because I found this magazine, and it just made Vizeweasier. Thanks for sharing</p>
+                        <p><i class="vk red icon"></i> <span>@@VDAR.KZ</span> I am so happy because I found this magazine, and it just made Vizeweasier. Thanks for sharing</p>
+                    </div>
+                    <div class="footer-item pdtops contacts-item">
+                        <h3>Наши контакты</h3>
+                        <div class="contactlist">
+                            <span class="contacts">Адресс:Казахстан, Алматы ZIP:050011</span>
+                            <span class="contacts">Телефон:<a href="tel:+77771234567">+7 777 123 45 67</a></span>
+                            <span class="contacts">Email: <a href="mailto:info@vdar.kz">info@vdar.kz</a></span>
+                        </div>
+                        <div class="sociallist">
+                            <a href="#"><i class="circular  inverted vk icon"></i></a>
+                            <a href="#"><i class="circular  inverted youtube icon"></i></a>
+                            <a href="#"><i class="circular  inverted instagram icon"></i></a>
+                            <a href="#"><i class="circular  inverted facebook icon"></i></a>
+                            <a href="#"><i class="circular  inverted twitter icon"></i></a>
+                        </div>
+                    </div>
+                    <!--<div class="footer-item">4</div>-->
+                </div>
+            </div>
+            <div class="copyrightblock">
+                <div class="ui container">
+                    <div class="copyinfo">
+                        <p class="copywrite-text">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright ©
+                            <script>document.write(new Date().getFullYear());</script>
+                            All rights reserved | made for
+                            <i class="closed captioning outline icon"></i>
+                            <a href="https://vdar.kz">VDAR</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 
 
-    <environment include="Development">
+    @*<environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
@@ -190,9 +232,9 @@
                 integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
         </script>
         <script src="~/js/semantic.js" type="text/javascript"></script>
-        <script src="~/js/main_1.js?v=0.1" type="text/javascript"></script>
-    </environment>
 
+    </environment>*@
+    <script src="~/js/main_1.js?v=0.58" type="text/javascript"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
