@@ -6,9 +6,9 @@
     <div class="row">
         <div class="fourteen wide mobile eight wide tablet eight wide computer center aligned column">
             <div class="formselector">
-                <div class="reg formselectoritem activeformselector ShowFromLeft" way-attr="1" for-form="reg-form "><span>Регистрация</span></div>
+                <div class="reg formselectoritem " way-attr="1" for-form="reg-form "><span>Регистрация</span></div>
                 <div class="vdar-divider"></div>
-                <div class="auth formselectoritem  " way-attr="2" for-form="login-form"><span>Авторизация</span></div>
+                <div class="auth formselectoritem  activeformselector ShowFromLeft" way-attr="2" for-form="login-form"><span>Авторизация</span></div>
                 <div class="vdar-divider"></div>
                 <div class="recovery formselectoritem" way-attr="3" for-form="recovery-form"><span>Восстановить</span></div>
             </div>
@@ -17,52 +17,62 @@
     <div class="row">
         <div class="fourteen wide mobile eight wide tablet eight wide computer center aligned column">
             <div class="formlist">
-                <form action="index.html" method="post" class="vdar-form recovery-form" sln="0">
+
+                <form asp-antiforgery="true" asp-action="Register" asp-controller="Account" method="post" class="vdar-form reg-form">
+                    <div class="validation" asp-validation-summary="ModelOnly">
+                        <div class="validation-summary-errors-title">
+                            <i class="exclamation small circle icon"></i>
+                            <span>К сожалению, при попытке регистрации возникли ошибки</span>
+                        </div>
+                    </div>
                     <div class="form-group">
+                        <input type="tel" asp-for="RegisterModel.Login" class="form-control" placeholder="Телефон">
+                        <span asp-validation-for="RegisterModel.Login"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" asp-for="RegisterModel.Password" class="form-control" placeholder="Пароль">
+                        <span asp-validation-for="RegisterModel.Password"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" asp-for="RegisterModel.ConfirmPassword" class="form-control" placeholder="Пароль ещё раз">
+                        <span asp-validation-for="RegisterModel.ConfirmPassword"></span>
+                    </div>
+                     <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lf53JQUAAAAAOTSqt0fJHZDQyMix23VWvK6gpu1"></div>
+                    <button type="submit" class="btn vdar-btn w-100">Регистрация</button>
+                </form>
+                <form asp-antiforgery="true" asp-action="Login" asp-controller="Account" method="post" class="vdar-form login-form activeform">
+                    <div class="validation" asp-validation-summary="ModelOnly">
+                        <div class="validation-summary-errors-title">
+                            <i class="exclamation small circle icon"></i>
+                            <span>К сожалению, при попытке входа возникли ошибки</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="EnterLogin" asp-for="LoginModel.Login" placeholder="Логин / Email / телефон">
+                        <span asp-validation-for="LoginModel.Login"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" asp-for="LoginModel.Password" required class="form-control" id="exampleInputPassword1" placeholder="Пароль">
+                        <span asp-validation-for="LoginModel.Password"></span>
+                    </div>
+                    <button type="submit" class="btn vdar-btn w-100">Войти</button>
+                </form>
+                <form action="index.html" method="post" class="vdar-form recovery-form">
+                    <div class="validation" asp-validation-summary="ModelOnly">
+                        <div class="validation-summary-errors-title">
+                            <i class="exclamation small circle icon"></i>
+                            <span>К сожалению, при попытке входа возникли ошибки</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
                         <input type="tel" class="form-control" id="exampleInputEmail1-rec" placeholder="Телефон">
                     </div>
                     <button type="submit" class="btn vdar-btn w-100 ">Продолжить</button>
                 </form>
-                <form asp-antiforgery="true" asp-action="Login" asp-controller="Account" method="post" class="vdar-form login-form activeform" sln="100">
-                        <div class="validation" asp-validation-summary="ModelOnly">
-                            <div class="validation-summary-errors-title">
-                                <i class="exclamation small circle icon"></i>
-                                <span>К сожалению, при попытке входа возникли ошибки</span>
-                            </div>
-
-                        </div>
-                    <div class="form-group">
-                        <input type="text" required class="form-control" id="EnterLogin" asp-for="Login" placeholder="Логин / Email / телефон">
-                        <span asp-validation-for="Login"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" asp-for="Password" required class="form-control" id="exampleInputPassword1" placeholder="Пароль">
-                        <span asp-validation-for="Password"></span>
-                    </div>
-                    <button type="submit" class="btn vdar-btn w-100">Войти</button>
-                </form>
-                <form asp-antiforgery="true" asp-action="Login" asp-controller="Account" method="post" class="vdar-form reg-form" sln="200">
-                        <div class="validation" asp-validation-summary="ModelOnly">
-                            <div class="validation-summary-errors-title">
-                                <i class="exclamation small circle icon"></i>
-                                <span>К сожалению, при попытке входа возникли ошибки</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" asp-for="Login" class="form-control" placeholder="Телефон">
-                            <span asp-validation-for="Login"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" asp-for="Password" class="form-control" placeholder="Пароль">
-                            <span asp-validation-for="Password"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Пароль ещё раз">
-                        </div>
-                        <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lf53JQUAAAAAOTSqt0fJHZDQyMix23VWvK6gpu1"></div>
-                        <button type="submit" class="btn vdar-btn w-100">Регистрация</button>
-                    </form>
-</div>
+            </div>
         </div>
     </div>
 </div>

@@ -29,7 +29,7 @@ namespace VdarWeb.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return User.Identity.IsAuthenticated ? RedirectToAction("Index", "Home") as IActionResult : View();
         }
 
         [ValidateAntiForgeryToken]
@@ -43,8 +43,8 @@ namespace VdarWeb.Controllers
                 using (WebClient wc = new WebClient())
                 {
                     wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                    wc.QueryString.Add("username", model.Login);
-                    wc.QueryString.Add("password", model.Password);
+                    wc.QueryString.Add("username", model.LoginModel.Login);
+                    wc.QueryString.Add("password", model.LoginModel.Password);
                     wc.QueryString.Add("finger_print", _detection.Browser.Type + " " + _detection.Device.Type);
                     wc.QueryString.Add("grant_type", "password");
                     wc.Headers["Authorization"] = "Bearer " + ControllerContext.HttpContext.Request.Cookies["AT"];
